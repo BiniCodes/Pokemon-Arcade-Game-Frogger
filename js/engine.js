@@ -90,13 +90,13 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+         allStars.forEach(function(star) {
+            star.update(dt);
+        });
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
-        allStars.forEach(function(star) {
-            star.update(dt);
-        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -152,14 +152,14 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+         allStars.forEach(function(star) {
+            star.render();
+        });
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
-        allStars.forEach(function(star) {
-            star.render();
-        });
     }
 
     /* This function does nothing but it could have been a good place to
