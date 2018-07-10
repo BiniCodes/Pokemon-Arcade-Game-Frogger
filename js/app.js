@@ -97,34 +97,37 @@ class Player {
 
 //Collision Detecion for three enemies
         // First enemy / Last in the row
-        if (enemy1.x < (player.x + 71) &&
-             (enemy1.x + 71) > player.x &&
-             enemy1.y < (player.y + 50.5) &&
-            (50.5 + enemy1.y) > player.y) {
+        if (enemy1.x < (this.x + 71) &&
+             (enemy1.x + 71) > this.x &&
+             enemy1.y < (this.y + 50.5) &&
+            (50.5 + enemy1.y) > this.y) {
 
                 // collision detected!
             console.log('collision detected!');
             this.reset();
+            resetItems();
         
         // Second enemy / In the middle
-        } else if (enemy2.x < (player.x + 71) &&
-             (enemy2.x + 71) > player.x &&
-             enemy2.y < (player.y + 50.5) &&
-            (50.5 + enemy2.y) > player.y) {
+        } else if (enemy2.x < (this.x + 71) &&
+             (enemy2.x + 71) > this.x &&
+             enemy2.y < (this.y + 50.5) &&
+            (50.5 + enemy2.y) > this.y) {
 
                 // collision detected!
             console.log('collision detected!');
             this.reset();
+            resetItems();
 
         // Third enemy / First in the row
-        } else if (enemy3.x < (player.x + 71) &&
-             (enemy3.x + 71) > player.x &&
-             enemy3.y < (player.y + 50.5) &&
-            (50.5 + enemy3.y) > player.y) {
+        } else if (enemy3.x < (this.x + 71) &&
+             (enemy3.x + 71) > this.x &&
+             enemy3.y < (this.y + 50.5) &&
+            (50.5 + enemy3.y) > this.y) {
 
                 // collision detected!
             console.log('collision detected!');
             this.reset();
+            resetItems();
 
         } else {
             console.log('no collision detected!');
@@ -133,8 +136,9 @@ class Player {
 //Win the Game
         if(this.y <= 30){
             console.log('WON!');
-            alert('You have won the game! \n Restart?');
+            alert('You have won the game! \n You have collected ' + collisionStar +' '+ 'Stars \n Restart?');
             this.reset();
+            resetItems();
         }
 
     }
@@ -170,6 +174,8 @@ class Player {
     }
 }
 
+//Variable to count collisions with items
+let collisionStar = 0;  
 //class of collectable items
 class Items{
 
@@ -186,54 +192,57 @@ class Items{
     }
     // Update the game
     update(dt) {
-            // First star
-        if (star1.x < (player.x + 71) &&
-                 (star1.x + 71) > player.x &&
-                 star1.y < (player.y + 50.5) &&
-                (50.5 + star1.y) > player.y) {
+            // Collision Detection for stars  
+        if (player.x < (this.x + 71) &&
+                 (player.x + 61) > this.x &&
+                 player.y < (this.y + 100) &&
+                (50 + player.y) > this.y) {
 
                     // collision detected!
                 console.log('Collected one star!');
-                star1.collect();
-            
-            // Second star
-            } else if (star2.x < (player.x + 71) &&
-                 (star2.x + 71) > player.x &&
-                 star2.y < (player.y + 50.5) &&
-                (50.5 + star2.y) > player.y) {
+                collisionStar += 1;
 
-                    // collision detected!
-                console.log('Collected one star!');
-                star2.collect();
+        // After a collision/ collection with/of a star, the star will be placed newly
+        //This happens four times
+        switch (collisionStar){
 
-            // Third star
-            } else if (star3.x < (player.x + 71) &&
-                 (star3.x + 71) > player.x &&
-                 star3.y < (player.y + 50.5) &&
-                (50.5 + star3.y) > player.y) {
+        case 1:
+            this.x = 0;
+            this.y = 400;
+            console.log("A star has been collected and placed to antoher place");
+            break;
 
-                    // collision detected!
-                console.log('Collected one star!');
-                star3.collect();
+        case 2:
+            this.x = 200;
+            this.y = 150;
+            console.log("A star has been collected and placed to antoher place");
+            break;
+        
+        case 3:
+            this.x = 300;
+            this.y = 400;           
+            console.log("A star has been collected and placed to antoher place");
+            break;
+        
+        case 4:
+            this.x = 10;
+            this.y = 75;
+            console.log("A star has been collected and placed to antoher place");  
+            break;
 
-            // Fourth star
-            } else if (star4.x < (player.x + 71) &&
-                 (star4.x + 71) > player.x &&
-                 star4.y < (player.y + 50.5) &&
-                (50.5 + star4.y) > player.y) {
+        default:
+            this.collect();        
+            console.log("A star has been collected and deleted");  
 
-                    // collision detected!
-                console.log('Collected one star!');
-                star4.collect();
-            } else {
-            console.log('no collision detected!');
-            }    
+        }
     }
+}
 
-// Puts the stars back to left bottom corner after collection
+//If the stars were replaced newly for four times, every following collection/ collision
+// will cause a deletion of the star until all stars are removed.
     collect(){
-        this.x = 0;
-        this.y = 400;
+        delete this.x;
+        delete this.y;
     }
 }
 
@@ -256,6 +265,18 @@ const star1 = new Items(310,320);
 const star2 = new Items(100,75);
 const star3 = new Items(410,150);
 const star4 = new Items(5,240);
+
+function resetItems(){
+        star1.x = 310;
+        star1.y = 320;
+        star2.x = 100;
+        star2.y = 75;
+        star3.x = 410;
+        star3.y = 150;
+        star4.x = 5;
+        star4.y = 240;
+        collisionStar = 0
+    }
 
 //Create an array for all Stars 
 //and add the different star Objects into it
